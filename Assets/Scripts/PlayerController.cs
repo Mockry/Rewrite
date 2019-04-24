@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
                 theGun.isFiring = false;
+          
         } // end of if(!usecontroller)
 
         //rotate and fire with controller
