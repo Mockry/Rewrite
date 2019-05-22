@@ -23,6 +23,10 @@ public class GunController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // the shotCounter will decrease as long as the RMB is held down
+        // when the shot counter is 0 it spawns a bullet at the gun's position and rotation and resets.
+        
         if(isFiring)
         {
             shotCounter -= Time.deltaTime;

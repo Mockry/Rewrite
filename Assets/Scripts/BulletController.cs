@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    public float speed;
+    public float speed = 8f;
 
-    public float lifeTime;
-
-    public int damageToGive;
+    private float lifeTime = 0.7f;
+    private int damageToGive = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +18,10 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //moves the bullet in the direction it is facing (which is the same as the gun's direction)
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        //destroys the bullet after a delay to stop them slowing the game down.
+        //Also lets me limit the range of the gun to adjust the difficulty
         lifeTime -= Time.deltaTime;
         if (lifeTime <= 0)
         {
@@ -27,11 +29,19 @@ public class BulletController : MonoBehaviour
         }
     }
 
+    // runs when the bullet collides with an other object's collision area
     private void OnCollisionEnter(Collision other)
     {
+        //checks if the other object is an enemy and inflicts damage if it is. it also destroys the bullet
         if(other.gameObject.tag == "Enemy")
         {
-            other.gameObject.GetComponent<EnemyHealthManager>().HurtEnemy(damageToGive);
+            other.gameObject.GetComponent<EnemyController>().HurtEnemy(damageToGive);
+            Destroy(gameObject);
+        }
+
+        // checks if the other object is an obstacle and destroys the bullet
+        if (other.gameObject.tag == "Blocker")
+        {
             Destroy(gameObject);
         }
     }

@@ -10,7 +10,7 @@ public class HurtPlayer : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthManager>().HurtPLayer(damageToGive);
+            other.gameObject.GetComponent<PlayerHealthManager>().HurtPlayer(damageToGive);
         }
     }
 
