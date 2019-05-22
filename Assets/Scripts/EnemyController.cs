@@ -6,23 +6,24 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    private Rigidbody myRB;
-    public float moveSpeed;
+    protected Rigidbody myRB;
+    public float moveSpeed = 3;
 
     //the enemy only needs to target the player and only the player has a PlayerController Script
-    private PlayerController thePlayer;
-    private PlayerHealthManager playerHealth;
+    //protected so the child classes can access it
+    protected PlayerController thePlayer;
+    protected PlayerHealthManager playerHealth;
 
-    private float storedSpeed;
-    private float freezeTimer;
-    private float freezeLength = 3;
-    private bool timeFreeze;
+    protected float storedSpeed;
+    protected float freezeTimer;
+    protected float freezeLength = 3;
+    protected bool timeFreeze;
 
     //Health Manager
-    private int health = 5;
-    private int currentHealth;
+    protected int health = 5;
+    public int currentHealth;
 
-    private StatManager theTracker;
+    protected StatManager theTracker;
 
 
     public NavMeshAgent nmAgent;
@@ -35,6 +36,7 @@ public class EnemyController : MonoBehaviour
         thePlayer = FindObjectOfType<PlayerController>();
         playerHealth = FindObjectOfType<PlayerHealthManager>();
         // stores the base move speed so it can be reset after the time freeze
+        nmAgent.speed = moveSpeed;
         storedSpeed = moveSpeed;
         //sets tracker so the active enemies can be updated in the UI
         theTracker = FindObjectOfType<StatManager>();
@@ -50,7 +52,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+   virtual public bool Update()
     {  
         //other part of my old movement
         
@@ -71,7 +73,7 @@ public class EnemyController : MonoBehaviour
             // stops movement while the timefreeze is active and starts the timer
             timeFreeze = true;
             freezeTimer = freezeLength;
-            moveSpeed = 0.0f;
+            nmAgent.speed = 0.0f;
 
             //sets a pending health penalty in the healthmanager so that
             //the penalty doesn't apply once per enemy
@@ -85,7 +87,7 @@ public class EnemyController : MonoBehaviour
         {
             //allows the freeze to be used again and puts the enemies speed back to its original value
             timeFreeze = false;
-            moveSpeed = storedSpeed;
+            nmAgent.speed = storedSpeed;
         }
 
         // Health/Death tracker
@@ -95,8 +97,10 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
             theTracker.RemoveEnemy();
         }
-
+        return true;
     }
+
+   
 
     public void HurtEnemy(int damage)
     {
