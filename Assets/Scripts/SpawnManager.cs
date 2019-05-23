@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     //I want this to be public so I can assign different enemies to individual spawnpoints
     public EnemyController enemy;
 
-    private float spawnDelay = 20f;
+    private float spawnDelay = 10f;
     private float spawnTimer;
 
     public Transform spawnPoint;
@@ -27,12 +27,16 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         spawnTimer -= Time.deltaTime;
-        if (spawnTimer <= 0)
+        if (spawnTimer <= 0 && counter.WaveCount() >= 1)
         {
             // Resets the spawnTimer and spawns an object of the Type Enemy Controller
             spawnTimer = spawnDelay;
             EnemyController newEnemy = Instantiate(enemy, spawnPoint.position, spawnPoint.rotation) as EnemyController;
+
+            //there is only one stat manager per level and multiple spawnpoints
+            // this method allows one script to manage enemies, waves and win/losing
             counter.AddEnemy();
+            counter.pendingwave = true;
         }
     }
 }

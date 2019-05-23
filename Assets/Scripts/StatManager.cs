@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StatManager : MonoBehaviour
 {
-    private float timeLimit = 120f;
+    private float timeLimit = 20f;
     private float timeRemaining = 0;
     private int timeDisplay;
 
-    private static int activeEnemies = 0;
+    private static int activeEnemies ;
+    public int totalWaves = 1;
+    private int wavesRemaining;
+    public bool pendingwave = false;
 
     private bool levelCleared = false;
-    private bool levelFailed = false;
 
     // only the player has the PlayerHealthManager script
 
@@ -21,6 +24,8 @@ public class StatManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        activeEnemies = 0;
+        wavesRemaining = totalWaves;
         text = GetComponent<Text>();
         timeRemaining = timeLimit;
     }
@@ -33,15 +38,25 @@ public class StatManager : MonoBehaviour
         timeDisplay = (int)timeRemaining;
 
         if (timeRemaining <= 0)
-         levelFailed = true; 
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
 
-        if (activeEnemies == 0 && timeRemaining <= 20f)
+        if (activeEnemies == 0 && wavesRemaining == 0)
         {
-            levelCleared = true;
+            levelCleared = true;     
+            //inserted for testing
+           SceneManager.LoadScene (SceneManager.GetSceneByName("Level1").buildIndex);
         }
 
-        text.text = "Time: " + timeDisplay + "        Enemies: " + activeEnemies;
+        text.text = "Time: " + timeDisplay + "     Enemies: " + activeEnemies;
 
+    }
+    private void LateUpdate()
+    {
+        if (pendingwave == true)
+        {
+            pendingwave = false;
+            newWave();
+        }
     }
 
     public void AddEnemy()
@@ -52,6 +67,13 @@ public class StatManager : MonoBehaviour
     {
         activeEnemies--;
     }
-
+    public void newWave()
+    {
+        wavesRemaining--;
+    }
+    public int WaveCount()
+    {
+        return wavesRemaining;
+    }
 
 }

@@ -68,27 +68,7 @@ public class EnemyController : MonoBehaviour
         //Time Freeze Mechanic
         // Time freeze only works if it isnt currently active and you have enough health to use it
         //without dying
-        if (Input.GetMouseButtonDown(1) && timeFreeze == false && playerHealth.getHealth() > playerHealth.freezeCost)
-        { 
-            // stops movement while the timefreeze is active and starts the timer
-            timeFreeze = true;
-            freezeTimer = freezeLength;
-            nmAgent.speed = 0.0f;
-
-            //sets a pending health penalty in the healthmanager so that
-            //the penalty doesn't apply once per enemy
-            playerHealth.freezePenalty = true;
-            
-        }
-        if (freezeTimer > 0)
-            freezeTimer -= Time.deltaTime;
-
-        if (freezeTimer <= 0)
-        {
-            //allows the freeze to be used again and puts the enemies speed back to its original value
-            timeFreeze = false;
-            nmAgent.speed = storedSpeed;
-        }
+        Freeze();
 
         // Health/Death tracker
         if (currentHealth <= 0)
@@ -100,9 +80,33 @@ public class EnemyController : MonoBehaviour
         return true;
     }
 
-   
+   public virtual void Freeze()
+    {
+        if (Input.GetMouseButtonDown(1) && timeFreeze == false && playerHealth.getHealth() > playerHealth.freezeCost)
+        {
+            // stops movement while the timefreeze is active and starts the timer
+            timeFreeze = true;
+            freezeTimer = freezeLength;
+            nmAgent.speed = 0.0f;
 
-    public void HurtEnemy(int damage)
+            //sets a pending health penalty in the healthmanager so that
+            //the penalty doesn't apply once per enemy
+            playerHealth.freezePenalty = true;
+
+        }
+        if (freezeTimer > 0)
+            freezeTimer -= Time.deltaTime;
+
+        if (freezeTimer <= 0)
+        {
+            //allows the freeze to be used again and puts the enemies speed back to its original value
+            timeFreeze = false;
+            nmAgent.speed = storedSpeed;
+        }
+    }
+
+    //this needs to be virtual so I can change the way the BossEnemy takes damage later
+    public virtual void HurtEnemy(int damage)
     {
         currentHealth -= damage;
     }

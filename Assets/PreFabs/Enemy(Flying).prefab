@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1774192299861920951}
   - component: {fileID: 1774192299861920950}
   - component: {fileID: 1774192299861920945}
+  - component: {fileID: 1774192299861920906}
   - component: {fileID: 1737827013112429180}
-  - component: {fileID: 7548247838888900964}
   m_Layer: 0
-  m_Name: Enemy(Cat)
+  m_Name: Enemy(basic)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,6 +114,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &1774192299861920906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774192299861920944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21e77be10c3caa438f9c5aaea4d2a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  nmAgent: {fileID: 1737827013112429180}
 --- !u!195 &1737827013112429180
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -127,30 +141,15 @@ NavMeshAgent:
   m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 360
+  m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7548247838888900964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1774192299861920944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da4996614c0a6b341aae89ffa533dfa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
-  currentHealth: 5
-  nmAgent: {fileID: 1737827013112429180}
 --- !u!1 &1774192300105370672
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,33 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// sets up CatEnemy as a child of Enemy controller
 
-    //Apparently inhereting this way just lets me re use the constructor
-    // I still need to copy over the functions
+// sets up CatEnemy as a child of Enemy controller
 public class CatEnemy : EnemyController
 {
+
+    //Set date to protected as my bossEnemy will use the same charge mechanic
+
     //booleans controlling the attacking and ready to attack states.
-    private bool attacking = false;
-    private bool charging = false;
+    protected bool attacking = false;
+    protected bool charging = false;
+
+    //sets how close the player has to be to trigger the charge
+    protected float procRange;
     //stores the player location at the when it comes in range
-    private Vector3 chargeTarget;
+    protected Vector3 chargeTarget;
 
     //controls the charge time and charge duration
-    private float chargeDelay = 2;
-    private float chargeTimer;
+    protected float chargeDelay = 2;
+    protected float chargeTimer;
 
-    private float attackLenght = 1;
-    private float attackAbort;
+    protected float attackLength = 0.5f;
+    protected float attackAbort;
 
-    private float chargeSpeed = 10;
+    protected float chargeSpeed = 10f;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        procRange = 5;
 
-        //Despite inhertitance values need to be re initialised
+        //Despite inhertitance references need to be reset
         
         myRB = GetComponent<Rigidbody>();
         thePlayer = FindObjectOfType<PlayerController>();
@@ -39,7 +44,7 @@ public class CatEnemy : EnemyController
 
         //initialise these just in case
         chargeTimer = chargeDelay;
-        attackAbort = attackLenght;
+        attackAbort = attackLength;
         nmAgent.speed = moveSpeed;
         storedSpeed = nmAgent.speed;
     }
@@ -67,7 +72,7 @@ public class CatEnemy : EnemyController
         {  
             //Gets the distance between the enemy and the player
             float dist = Vector3.Distance(thePlayer.transform.position, transform.position);
-            if (dist <= 4)
+            if (dist <= procRange)
             {
                 //stops the enemy when in range of the player and stores the players loacation
                 nmAgent.speed = 0;
@@ -76,6 +81,8 @@ public class CatEnemy : EnemyController
                 chargeTimer = chargeDelay;
                 return true;
             }
+            //runs the Enemy Controller update while out of range
+            // which returns true and ends the update here
             base.Update();
         }        
         
@@ -83,12 +90,12 @@ public class CatEnemy : EnemyController
         // after a delay
         if (charging == true && attacking == false)
         {
+             transform.LookAt(chargeTarget);
+       
             chargeTimer -= Time.deltaTime;
             if (chargeTimer <= 0)
             {
-                attackAbort = attackLenght;
-                nmAgent.SetDestination(chargeTarget);
-                nmAgent.speed = chargeSpeed;
+                attackAbort = attackLength;
                 attacking = true;
             }
         }
@@ -96,23 +103,30 @@ public class CatEnemy : EnemyController
         //stops the charge after a delay and restores previous speed
         if (attacking == true)
         {
+            //Did the charge this way becuase the nmAgent.speed wouldn't
+            //change to the chargespeed
+            myRB.velocity = (transform.forward * chargeSpeed);
+
+
+
             attackAbort -= Time.deltaTime;
             if (attackAbort <= 0)
             {
+                //this resets the velocity so the nmAgent can take over again
+                myRB.velocity = (transform.forward * 0);
                 nmAgent.speed = storedSpeed;
                 attacking = false;
                 charging = false;
-
             }
         }
-        
 
         return true;
     }
-
-    public void HurtEnemy(int damage)
+    // Stops the charge if the Enemy hits an obstacle
+    protected virtual void OnCollisionEnter(Collision other)
     {
-        currentHealth -= damage;
+        if (other.gameObject.tag == "Blocker")
+            attackAbort = 0;
     }
 
 }
