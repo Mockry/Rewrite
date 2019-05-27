@@ -1,37 +1,56 @@
 fileFormatVersion: 2
-guid: e48fe91f3a5dee145a36de83252fa2e8
+guid: 27e3e75ab7c884b468bdeb2172a23e40
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Capsule001
-    100002: //RootNode
-    100004: Sphere001
-    100006: Sphere002
-    100008: Sphere003
-    100010: Hose001
-    400000: Capsule001
-    400002: //RootNode
-    400004: Sphere001
-    400006: Sphere002
-    400008: Sphere003
-    400010: Hose001
+    100000: Box001
+    100002: Building
+    100004: Dish
+    100006: Dish2
+    100008: Door1
+    100010: Mast
+    100012: Mast2
+    100014: //RootNode
+    100016: Window1
+    100018: Window2
+    400000: Box001
+    400002: Building
+    400004: Dish
+    400006: Dish2
+    400008: Door1
+    400010: Mast
+    400012: Mast2
+    400014: //RootNode
+    400016: Window1
+    400018: Window2
     2100000: No Name
-    2100002: 'Material #3'
-    2300000: Capsule001
-    2300002: Sphere001
-    2300004: Sphere002
-    2300006: Sphere003
-    2300008: Hose001
-    3300000: Capsule001
-    3300002: Sphere001
-    3300004: Sphere002
-    3300006: Sphere003
-    3300008: Hose001
-    4300000: Capsule001
-    4300002: Sphere001
-    4300004: Sphere002
-    4300006: Sphere003
-    4300008: Hose001
+    2300000: Box001
+    2300002: Building
+    2300004: Dish
+    2300006: Dish2
+    2300008: Door1
+    2300010: Mast
+    2300012: Mast2
+    2300014: Window1
+    2300016: Window2
+    3300000: Box001
+    3300002: Building
+    3300004: Dish
+    3300006: Dish2
+    3300008: Door1
+    3300010: Mast
+    3300012: Mast2
+    3300014: Window1
+    3300016: Window2
+    4300000: Building
+    4300002: Mast
+    4300004: Dish
+    4300006: Window1
+    4300008: Window2
+    4300010: Door1
+    4300012: Dish2
+    4300014: Mast2
+    4300016: Box001
   externalObjects: {}
   materials:
     importMaterials: 1

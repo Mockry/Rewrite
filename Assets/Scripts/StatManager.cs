@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class StatManager : MonoBehaviour
 {
     //Sets the time limit for the level and displays it on the UI
-    private float timeLimit = 20f;
+    private float timeLimit = 120f;
     private float timeRemaining = 0;
     private int timeDisplay;
     //puts a delay between clearing the level and loading the next one
