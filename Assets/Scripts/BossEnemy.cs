@@ -30,7 +30,12 @@ public class BossEnemy : CatEnemy
         attackAbort = attackLength;
         nmAgent.speed = moveSpeed;
         storedSpeed = nmAgent.speed;
+        currentHealth = health;
+
     }
+
+    //Boss enemy works the same way as the catEnemy but is invincible unless you freeze it during
+    //the attacking state
 
     // Update is called once per frame
     override public bool Update()
@@ -42,8 +47,10 @@ public class BossEnemy : CatEnemy
             Freeze();
         }
 
-        //Modifies the freeze to stop the charge (base version only changes nmAgent.speed)
-        //Also allows the Boss to be attacked in this interval lets the freezeTimer keep ticking
+        // Modifies the freeze to stop the charge (base version of freeze only changes nmAgent.speed
+        // but attacking doesnt use the navAgent 
+        // Also allows the Boss to be attacked in this interval and lets the freeze timer keep ticking
+        // while not decreasing the attackTimer
         if(attacking == true && timeFreeze == true)
         {
             shielded = false;
@@ -52,7 +59,7 @@ public class BossEnemy : CatEnemy
             return true;
         }
 
-        //
+        // keeps the shield on at all other times
         shielded = true;
         base.Update();
         return true;
@@ -62,7 +69,8 @@ public class BossEnemy : CatEnemy
    
 
 
-    //uses a slightly different version of hurt enem
+    // uses a slightly different version of hurtEnemy
+    // to take the shield into account
     public override void HurtEnemy(int damage)
     {
         if (!shielded)

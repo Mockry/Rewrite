@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealthManager : MonoBehaviour
 {
-    public int startingHealth;
+    private int startingHealth;
     private int currentHealth;
     private float regenTimer = 3;
 
@@ -28,6 +28,7 @@ public class PlayerHealthManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startingHealth = 100;
         currentHealth = startingHealth;
         rend = GetComponent<Renderer>();
         storedColor = rend.material.GetColor("_Color");

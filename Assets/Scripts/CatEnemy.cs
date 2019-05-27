@@ -47,10 +47,14 @@ public class CatEnemy : EnemyController
         attackAbort = attackLength;
         nmAgent.speed = moveSpeed;
         storedSpeed = nmAgent.speed;
+        currentHealth = health;
+
     }
 
-   //base.Update(); calls the Enemy controller version of Update
-   //Since this returns true at the end it stops both versions being run needlessly
+    //base.Update(); calls the Enemy controller version of Update
+    //Since this returns true at the end it stops both versions being run needlessly
+    // The enemy logic is a finite state machine that changes states when the play is within a
+    // set radius
 
     // Update is called once per frame
     override public bool Update()
@@ -81,7 +85,7 @@ public class CatEnemy : EnemyController
                 chargeTimer = chargeDelay;
                 return true;
             }
-            //runs the Enemy Controller update while out of range
+            // runs the Enemy Controller update while out of range
             // which returns true and ends the update here
             base.Update();
         }        
@@ -103,18 +107,18 @@ public class CatEnemy : EnemyController
         //stops the charge after a delay and restores previous speed
         if (attacking == true)
         {
-            //Did the charge this way becuase the nmAgent.speed wouldn't
-            //change to the chargespeed
+            //Did the charge this way becuase the nmAgent got confused
+            // if the enemy charged into an object
             myRB.velocity = (transform.forward * chargeSpeed);
 
-
-
+            // stops the charge after a set duration
             attackAbort -= Time.deltaTime;
             if (attackAbort <= 0)
             {
                 //this resets the velocity so the nmAgent can take over again
                 myRB.velocity = (transform.forward * 0);
                 nmAgent.speed = storedSpeed;
+                //resets the state so it starts running the baseUpdate
                 attacking = false;
                 charging = false;
             }

@@ -20,8 +20,8 @@ public class EnemyController : MonoBehaviour
     protected bool timeFreeze;
 
     //Health Manager
-    protected int health = 5;
-    public int currentHealth;
+    public int health;
+    protected int currentHealth;
 
     protected StatManager theTracker;
 
@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour
         currentHealth = health;
     }
 
-    void FixedUpdate()
+   public virtual void FixedUpdate()
     {
         // original movement code which I'm leaving in case I need 
         // to copy it for other enemies
@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour
         //so it doesnt need to be adjusted
         //   transform.LookAt(thePlayer.transform.position);
 
-        //Changed my original movement to use a navmesh
+        //Changed my original movement method to one that uses pathfinding
         nmAgent.SetDestination(thePlayer.transform.position);
 
 
@@ -73,6 +73,9 @@ public class EnemyController : MonoBehaviour
         // Health/Death tracker
         if (currentHealth <= 0)
         {
+            //Restores some of the players health
+            //Kills the enemy
+            //Updates the active enemies
             playerHealth.RestoreHealth();
             Destroy(gameObject);
             theTracker.RemoveEnemy();
@@ -82,7 +85,10 @@ public class EnemyController : MonoBehaviour
 
    public virtual void Freeze()
     {
-        if (Input.GetMouseButtonDown(1) && timeFreeze == false && playerHealth.getHealth() > playerHealth.freezeCost)
+        //Checks for right mouse button being down
+        if (Input.GetMouseButtonDown(1)
+            && timeFreeze == false 
+            && playerHealth.getHealth() > playerHealth.freezeCost)
         {
             // stops movement while the timefreeze is active and starts the timer
             timeFreeze = true;
@@ -94,6 +100,7 @@ public class EnemyController : MonoBehaviour
             playerHealth.freezePenalty = true;
 
         }
+        
         if (freezeTimer > 0)
             freezeTimer -= Time.deltaTime;
 

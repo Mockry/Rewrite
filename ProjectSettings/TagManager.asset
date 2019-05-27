@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Blocker
+  - Floor Hazard
   layers:
   - Default
   - TransparentFX
