@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealthManager : MonoBehaviour
 {
-    private int startingHealth;
+    private int startingHealth = 100;
     private int currentHealth;
     private float regenTimer = 3;
 
-    public float flashLength;
-    private float flashCounter;
+    private float deathTimer = 2;
+    private float deathCounter;
 
     // Boolean to store if the player will take damage from the time freeze
     // needs a seperate variable so it doesnt apply once per frozen enemy
@@ -21,17 +21,18 @@ public class PlayerHealthManager : MonoBehaviour
     // public so the enemyController can check if you have enough health to use it
     public int freezeCost = 20;
 
-    private Renderer rend;
-    private Color storedColor;
-
+    private AudioSource deathSound;
+    private bool soundPlaying = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        startingHealth = 100;
         currentHealth = startingHealth;
-        rend = GetComponent<Renderer>();
-        storedColor = rend.material.GetColor("_Color");
+        //This is for putting a delay between losing all health and resetting the level
+        deathCounter = deathTimer;
+        // the player will only have one sound so just searching
+        // for all audio sources is enough
+        deathSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -39,19 +40,22 @@ public class PlayerHealthManager : MonoBehaviour
     {
      if(currentHealth <= 0)
         {
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-        }
-
-        if (flashCounter > 0)
-        {
-            flashCounter -= Time.deltaTime;
-            if (flashCounter <= 0)
+            // plays the deathSOund but stops it playing once per frame
+            // probably a better way of doing this but I dont know what it is
+            if(soundPlaying == false)
             {
-                rend.material.SetColor("_Color", storedColor);
+                soundPlaying = true;
+                deathSound.Play();
+            }
+
+            deathCounter -= Time.deltaTime;
+            if (deathCounter <= 0)
+            {       
+                SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
             }
         }
+       
         // Gradual health Regen
-        
             regenTimer -= Time.deltaTime;
             if (regenTimer <= 0)
             {
@@ -67,8 +71,6 @@ public class PlayerHealthManager : MonoBehaviour
     public void HurtPlayer(int damageAmount)
     {
         currentHealth -= damageAmount;
-        flashCounter = flashLength;
-        rend.material.SetColor("_Color", Color.white);
     }
 
     public int getHealth()
@@ -78,7 +80,7 @@ public class PlayerHealthManager : MonoBehaviour
 
     public void RestoreHealth()
     {
-        currentHealth += 5;
+        currentHealth += 2;
     }
 
 
@@ -87,9 +89,7 @@ public class PlayerHealthManager : MonoBehaviour
         if (freezePenalty == true)
         {
             freezePenalty = false;
-            HurtPlayer(freezeCost);
-
-            
+            HurtPlayer(freezeCost);       
         }
     }
 }

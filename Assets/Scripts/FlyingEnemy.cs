@@ -11,9 +11,10 @@ public class FlyingEnemy : EnemyController
         thePlayer = FindObjectOfType<PlayerController>();
         playerHealth = FindObjectOfType<PlayerHealthManager>();
         theTracker = FindObjectOfType<StatManager>();
+        enemyHit = GetComponent<AudioSource>();
 
         currentHealth = health;
-
+        enemyType = "bat";
     }
 
 
@@ -36,6 +37,7 @@ public class FlyingEnemy : EnemyController
             //Restores some of the players health
             //Kills the enemy
             //Updates the active enemies
+            thePlayer.playSound(enemyType);
             playerHealth.RestoreHealth();
             Destroy(gameObject);
             theTracker.RemoveEnemy();

@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
 {
     protected Rigidbody myRB;
     public float moveSpeed = 3;
+    protected string enemyType;
 
     //the enemy only needs to target the player and only the player has a PlayerController Script
     //protected so the child classes can access it
@@ -25,8 +26,9 @@ public class EnemyController : MonoBehaviour
 
     protected StatManager theTracker;
 
-
     public NavMeshAgent nmAgent;
+
+    protected AudioSource enemyHit;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,12 @@ public class EnemyController : MonoBehaviour
         //sets tracker so the active enemies can be updated in the UI
         theTracker = FindObjectOfType<StatManager>();
         currentHealth = health;
+        //This class only has one sound effect on it so GetComponent works just fine
+        enemyHit = GetComponent<AudioSource>();
+
+        //This tells the player what sound to play when the enemy dies
+        //(the enemy can't play it as the audio source vanishes when it dies)
+        enemyType = "basic";
     }
 
    public virtual void FixedUpdate()
@@ -75,7 +83,8 @@ public class EnemyController : MonoBehaviour
         {
             //Restores some of the players health
             //Kills the enemy
-            //Updates the active enemies
+            //Updates the active enemies 
+            thePlayer.playSound(enemyType);
             playerHealth.RestoreHealth();
             Destroy(gameObject);
             theTracker.RemoveEnemy();
@@ -115,6 +124,7 @@ public class EnemyController : MonoBehaviour
     //this needs to be virtual so I can change the way the BossEnemy takes damage later
     public virtual void HurtEnemy(int damage)
     {
+        enemyHit.Play();
         currentHealth -= damage;
     }
 

@@ -16,6 +16,12 @@ public class PlayerController : MonoBehaviour
 
     public bool useController;
 
+    //Putting these on the player as killing the enemies destroys their audioSource
+    [SerializeField] private AudioSource enemyDeath;
+    [SerializeField] private AudioSource catDeath;
+    [SerializeField] private AudioSource batDeath;
+    [SerializeField] private AudioSource sheepDeath;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,4 +96,20 @@ public class PlayerController : MonoBehaviour
         // updates the position with move velocity
         myRigidbody.velocity = moveVelocity;
     }
+
+    
+    // This should probably be some sort of switch statement
+    // but its the last thing I did and I didn't want to complicat it
+    public void playSound(string enemyType)
+    {
+        if (enemyType == "basic")
+            enemyDeath.Play();
+        if (enemyType == "cat")
+            catDeath.Play();
+        if (enemyType == "bat")
+            batDeath.Play();
+        if (enemyType == "sheep")
+            sheepDeath.Play();
+    }
+      
 }

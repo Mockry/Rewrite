@@ -16,13 +16,19 @@ public class BossEnemy : CatEnemy
     {
         procRange = 20;
         chargeSpeed = 20;
-        attackLength = 2;
+        chargeDelay = 4;
+        attackLength = 1.5f;
+        enemyType = "sheep";
+
+        freezeLength = 5;
+
         //Despite inhertitance references need to be reset
 
         myRB = GetComponent<Rigidbody>();
         thePlayer = FindObjectOfType<PlayerController>();
         playerHealth = FindObjectOfType<PlayerHealthManager>();
         theTracker = FindObjectOfType<StatManager>();
+        enemyHit = GetComponent<AudioSource>();
 
 
         //initialise these just in case
@@ -74,7 +80,10 @@ public class BossEnemy : CatEnemy
     public override void HurtEnemy(int damage)
     {
         if (!shielded)
-        currentHealth -= damage;
+        {
+            enemyHit.Play();
+            currentHealth -= damage;
+        }
     }
 
 }

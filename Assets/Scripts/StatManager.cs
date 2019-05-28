@@ -20,6 +20,8 @@ public class StatManager : MonoBehaviour
 
     public string nextLevel;
 
+    private AudioSource victory;
+
     // only the player has the PlayerHealthManager script
 
     Text text;
@@ -31,6 +33,8 @@ public class StatManager : MonoBehaviour
         wavesRemaining = totalWaves;
         text = GetComponent<Text>();
         timeRemaining = timeLimit;
+     //   playing = false;
+        victory = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -46,6 +50,9 @@ public class StatManager : MonoBehaviour
 
         if (activeEnemies == 0 && wavesRemaining == 0)
         {
+            if (victory.isPlaying == false)
+                victory.Play();
+
             // gives you a few seconds before loading the next level
             nextLevelTimer -= Time.deltaTime;
             if(nextLevelTimer <= 0)
@@ -56,6 +63,7 @@ public class StatManager : MonoBehaviour
         //Sets the text displayed on the UI object
         text.text = "Time: " + timeDisplay + "     Enemies: " + activeEnemies;
 
+        
     }
     private void LateUpdate()
     {

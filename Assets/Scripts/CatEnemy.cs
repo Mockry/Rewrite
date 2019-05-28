@@ -20,19 +20,23 @@ public class CatEnemy : EnemyController
     protected Vector3 chargeTarget;
 
     //controls the charge time and charge duration
-    protected float chargeDelay = 2;
+    protected float chargeDelay = 1;
     protected float chargeTimer;
 
     protected float attackLength = 0.5f;
     protected float attackAbort;
 
-    protected float chargeSpeed = 10f;
-    
+    protected float chargeSpeed = 12f;
+
+    [SerializeField] protected AudioSource catHit;
+    [SerializeField] protected AudioSource chargeSound;
+    [SerializeField] protected AudioSource sheepcharge;    
 
     // Start is called before the first frame update
     void Start()
     {
         procRange = 5;
+        enemyType = "cat";
 
         //Despite inhertitance references need to be reset
         
@@ -64,6 +68,7 @@ public class CatEnemy : EnemyController
         // Health/Death tracker
         if (currentHealth <= 0)
         {
+            thePlayer.playSound(enemyType);
             playerHealth.RestoreHealth();
             Destroy(gameObject);
             theTracker.RemoveEnemy();
@@ -99,16 +104,19 @@ public class CatEnemy : EnemyController
             chargeTimer -= Time.deltaTime;
             if (chargeTimer <= 0)
             {
+                nmAgent.speed = chargeSpeed;
                 attackAbort = attackLength;
                 attacking = true;
+                if(enemyType == "cat")
+                chargeSound.Play();
+                if (enemyType == "sheep")
+                    sheepcharge.Play();
             }
         }
-
         //stops the charge after a delay and restores previous speed
         if (attacking == true)
         {
-            //Did the charge this way becuase the nmAgent got confused
-            // if the enemy charged into an object
+            //The navAgent is very slow to respond so using velocity works better here
             myRB.velocity = (transform.forward * chargeSpeed);
 
             // stops the charge after a set duration
@@ -133,4 +141,11 @@ public class CatEnemy : EnemyController
             attackAbort = 0;
     }
 
+    // needed to override this to stop it crashing.
+    // The enemy controller doesn't seem to like the serialisedfields
+    override public void HurtEnemy(int damage)
+    {
+        catHit.Play();
+        currentHealth -= damage;
+    }
 }
