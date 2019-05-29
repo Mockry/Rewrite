@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class StatManager : MonoBehaviour
 {
     //Sets the time limit for the level and displays it on the UI
-    private float timeLimit = 120f;
+    private float timeLimit = 90f;
     private float timeRemaining = 0;
     private int timeDisplay;
     //puts a delay between clearing the level and loading the next one
@@ -17,12 +17,11 @@ public class StatManager : MonoBehaviour
     public int totalWaves = 1;
     private int wavesRemaining;
     public bool pendingwave = false;
-
+    
+    //The level to be loaded is set from the editor
     public string nextLevel;
 
     private AudioSource victory;
-
-    // only the player has the PlayerHealthManager script
 
     Text text;
 
@@ -33,7 +32,6 @@ public class StatManager : MonoBehaviour
         wavesRemaining = totalWaves;
         text = GetComponent<Text>();
         timeRemaining = timeLimit;
-     //   playing = false;
         victory = GetComponent<AudioSource>();
     }
 
@@ -50,6 +48,7 @@ public class StatManager : MonoBehaviour
 
         if (activeEnemies == 0 && wavesRemaining == 0)
         {
+            //loops the victory fanfare while you wait for the next level
             if (victory.isPlaying == false)
                 victory.Play();
 
@@ -60,10 +59,8 @@ public class StatManager : MonoBehaviour
         }
         
 
-        //Sets the text displayed on the UI object
+        //Sets the text displayed on the UI
         text.text = "Time: " + timeDisplay + "     Enemies: " + activeEnemies;
-
-        
     }
     private void LateUpdate()
     {
@@ -71,24 +68,28 @@ public class StatManager : MonoBehaviour
         {
             //reduces the number of remaining waves
             //pending wave is set in the enemy spawner script
-            // so the late update makes sure newWave() only runs once per frame
+            //so the late update makes sure newWave() only runs once per frame
             pendingwave = false;
             newWave();
         }
     }
-
+    //Runs when an enemy spawns
     public void AddEnemy()
     {
         activeEnemies++;
     }
+    //runs when an eney dies
     public void RemoveEnemy ()
     {
         activeEnemies--;
     }
+    //runs when an enemy spawns but in the late update so it runs once per wave
+    //not once per enemy
     public void newWave()
     {
         wavesRemaining--;
     }
+    //getter so the SpawnManager knows if it can spawn another wave
     public int WaveCount()
     {
         return wavesRemaining;

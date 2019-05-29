@@ -22,7 +22,6 @@ public class PlayerHealthManager : MonoBehaviour
     public int freezeCost = 20;
 
     private AudioSource deathSound;
-    private bool soundPlaying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,14 +39,11 @@ public class PlayerHealthManager : MonoBehaviour
     {
      if(currentHealth <= 0)
         {
-            // plays the deathSOund but stops it playing once per frame
-            // probably a better way of doing this but I dont know what it is
-            if(soundPlaying == false)
-            {
-                soundPlaying = true;
+            // plays the deathSound but stops it playing once per frame
+            if(!deathSound.isPlaying)
                 deathSound.Play();
-            }
-
+            
+            //gives a slight delay before reloading the level
             deathCounter -= Time.deltaTime;
             if (deathCounter <= 0)
             {       
@@ -62,28 +58,28 @@ public class PlayerHealthManager : MonoBehaviour
                 currentHealth++;
                 regenTimer = 2;
             }
-
+            //caps player health at 100
         if (currentHealth > 100)
             currentHealth = 100;
 
     }
-
+    //This is called by the HurtPlayer script
     public void HurtPlayer(int damageAmount)
     {
         currentHealth -= damageAmount;
     }
-
+    //getter for the health display
     public int getHealth()
     {
         return currentHealth;
     }
-
+    // called when an enemy dies
     public void RestoreHealth()
     {
         currentHealth += 2;
     }
-
-
+    //This goes in LateUpdate in case the freeze penalty applies once per frozen Enemy
+    //might be unnecessary but why take the chance.
     private void LateUpdate()
     {
         if (freezePenalty == true)

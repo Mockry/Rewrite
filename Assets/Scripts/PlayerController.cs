@@ -12,11 +12,13 @@ public class PlayerController : MonoBehaviour
     // sets Camera to the scene's main camera
     private Camera mainCamera;
     // lets you set which gun is being controlled
+    //not actually used in this version
     public GunController theGun;
-
+    //controls what input the update looks for
     public bool useController;
 
-    //Putting these on the player as killing the enemies destroys their audioSource
+    //Putting these on the player as killing the enemies also destroys their audioSource
+    //so they can't play the sound
     [SerializeField] private AudioSource enemyDeath;
     [SerializeField] private AudioSource catDeath;
     [SerializeField] private AudioSource batDeath;
@@ -28,7 +30,6 @@ public class PlayerController : MonoBehaviour
         // sets myRigidBody to the rigid body attached to
         // whatever object the script is attached to
         myRigidbody = GetComponent<Rigidbody>();
-
         mainCamera = FindObjectOfType <Camera>();
     }
 
@@ -50,23 +51,24 @@ public class PlayerController : MonoBehaviour
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             float rayLength;
 
-            //If the ray hits the groundplane it sets the rayLenght to be the distance
+            //If the ray hits the groundplane it sets the rayLength to be the distance
             // from the camera to that point (where the mouse is in this case)
             if (groundPlane.Raycast(cameraRay, out rayLength))
             {
                 //gets the point where the ray is intersecting the plane
                 Vector3 pointToLook = cameraRay.GetPoint(rayLength);
 
-                // displays a line from the camera to the plane to show how it works
+                //displays a line from the camera to the plane to show how it works
                 //Debug.DrawLine(cameraRay.origin, pointToLook, Color.blue);
 
-                //makes the object face the mousepointer but adjusted to have the same vertical as the object (player)
+                //makes the object face the mousepointer but adjusted
+                //to have the same vertical as the object (player)
                 transform.LookAt(new Vector3(pointToLook.x, transform.position.y, pointToLook.z));
             }
-
+            //Shoots if the shoot button is held down
             if (Input.GetMouseButtonDown(0))
                 theGun.isFiring = true;
-
+            //doesn't shoot if it isnt
             if (Input.GetMouseButtonUp(0))
                 theGun.isFiring = false;
           
@@ -95,11 +97,11 @@ public class PlayerController : MonoBehaviour
     {
         // updates the position with move velocity
         myRigidbody.velocity = moveVelocity;
-    }
-
-    
+    } 
     // This should probably be some sort of switch statement
-    // but its the last thing I did and I didn't want to complicat it
+    // but its the last thing I did and I didn't want to complicate it
+
+     //When an enemy dies they call this and pass in their enemyType
     public void playSound(string enemyType)
     {
         if (enemyType == "basic")
@@ -111,5 +113,5 @@ public class PlayerController : MonoBehaviour
         if (enemyType == "sheep")
             sheepDeath.Play();
     }
-      
+     
 }

@@ -1844,7 +1844,7 @@ PrefabInstance:
     - target: {fileID: 2789480340764673059, guid: 0a130b7bfd59a9f4daf29dc1786dbee5,
         type: 3}
       propertyPath: totalWaves
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2789480340764673059, guid: 0a130b7bfd59a9f4daf29dc1786dbee5,
         type: 3}

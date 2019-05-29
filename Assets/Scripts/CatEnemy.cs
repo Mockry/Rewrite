@@ -19,17 +19,21 @@ public class CatEnemy : EnemyController
     //stores the player location at the when it comes in range
     protected Vector3 chargeTarget;
 
-    //controls the charge time and charge duration
+    //controls long the enemy stops before charging
     protected float chargeDelay = 1;
     protected float chargeTimer;
-
+    // and how long the charge is
     protected float attackLength = 0.5f;
     protected float attackAbort;
 
     protected float chargeSpeed = 12f;
+    protected float storedCharge;
 
+    //Serialised Fields let me store several audio sources on one object
+    //and set them in the editor
     [SerializeField] protected AudioSource catHit;
     [SerializeField] protected AudioSource chargeSound;
+    //This has to be here as BosssEnemy works by calling the CatEnemy update
     [SerializeField] protected AudioSource sheepcharge;    
 
     // Start is called before the first frame update
@@ -51,12 +55,13 @@ public class CatEnemy : EnemyController
         attackAbort = attackLength;
         nmAgent.speed = moveSpeed;
         storedSpeed = nmAgent.speed;
+        storedCharge = chargeSpeed;
         currentHealth = health;
 
     }
 
-    //base.Update(); calls the Enemy controller version of Update
-    //Since this returns true at the end it stops both versions being run needlessly
+    // base.Update(); calls the Enemy controller version of Update
+    // Since this returns true at the end it stops both versions being run needlessly
     // The enemy logic is a finite state machine that changes states when the play is within a
     // set radius
 
@@ -64,7 +69,7 @@ public class CatEnemy : EnemyController
     override public bool Update()
     {
         // damage is applied in the base update so this stops damage from being delayed
-        //Until the charge sequence ends
+        // Until the charge sequence ends
         // Health/Death tracker
         if (currentHealth <= 0)
         {
@@ -86,14 +91,16 @@ public class CatEnemy : EnemyController
                 //stops the enemy when in range of the player and stores the players loacation
                 nmAgent.speed = 0;
                 chargeTarget = thePlayer.transform.position;
+                //Changes the enemy's state and resets the chargeTimer
                 charging = true;
                 chargeTimer = chargeDelay;
+                
                 return true;
             }
             // runs the Enemy Controller update while out of range
             // which returns true and ends the update here
             base.Update();
-        }        
+        }
         
         //sets the target to the players location and increases speed 
         // after a delay
@@ -104,11 +111,13 @@ public class CatEnemy : EnemyController
             chargeTimer -= Time.deltaTime;
             if (chargeTimer <= 0)
             {
-                nmAgent.speed = chargeSpeed;
+                //controls how far the enemy charges
                 attackAbort = attackLength;
+                //Changes the state gain
                 attacking = true;
+                //plays one of the sound effects
                 if(enemyType == "cat")
-                chargeSound.Play();
+                    chargeSound.Play();
                 if (enemyType == "sheep")
                     sheepcharge.Play();
             }
@@ -117,6 +126,7 @@ public class CatEnemy : EnemyController
         if (attacking == true)
         {
             //The navAgent is very slow to respond so using velocity works better here
+            //I think it has a built in easing function but upping the acceleration only helped a little
             myRB.velocity = (transform.forward * chargeSpeed);
 
             // stops the charge after a set duration
@@ -131,7 +141,6 @@ public class CatEnemy : EnemyController
                 charging = false;
             }
         }
-
         return true;
     }
     // Stops the charge if the Enemy hits an obstacle
@@ -148,4 +157,6 @@ public class CatEnemy : EnemyController
         catHit.Play();
         currentHealth -= damage;
     }
+
+
 }

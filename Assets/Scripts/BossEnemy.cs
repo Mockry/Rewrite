@@ -6,23 +6,21 @@ using UnityEngine;
 public class BossEnemy : CatEnemy
 
 {
+    //Boolean to control when the boss is vulnerable to damage
     private bool shielded;
-    private float storedCharge;
-
-
 
     // Start is called before the first frame update
     void Start()
     {
         procRange = 20;
-        chargeSpeed = 20;
-        chargeDelay = 4;
+        chargeSpeed = 25;
+        chargeDelay = 3;
         attackLength = 1.5f;
         enemyType = "sheep";
 
         freezeLength = 5;
 
-        //Despite inhertitance references need to be reset
+        // references need to be reset
 
         myRB = GetComponent<Rigidbody>();
         thePlayer = FindObjectOfType<PlayerController>();
@@ -53,10 +51,10 @@ public class BossEnemy : CatEnemy
             Freeze();
         }
 
-        // Modifies the freeze to stop the charge (base version of freeze only changes nmAgent.speed
-        // but attacking doesnt use the navAgent 
+        // Modifies the freeze to stop the charge (base version of freeze only changes movespeed
+        // and nmAgent. speed but attacking uses chargeSpeed.
         // Also allows the Boss to be attacked in this interval and lets the freeze timer keep ticking
-        // while not decreasing the attackTimer
+        // while not decreasing the attackTimer and ending the charge
         if(attacking == true && timeFreeze == true)
         {
             shielded = false;
@@ -85,5 +83,4 @@ public class BossEnemy : CatEnemy
             currentHealth -= damage;
         }
     }
-
 }

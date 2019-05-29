@@ -15,13 +15,13 @@ public class FlyingEnemy : EnemyController
 
         currentHealth = health;
         enemyType = "bat";
+        storedSpeed = moveSpeed;
     }
 
 
     //Acts the same as the basic enemy but doesn't use the navMesh
-    // So it ignores obstables (didn't actually work till I changed it's colldier to be a trigger)
-
-
+    //So it ignores the pond on level2
+ 
     public override void FixedUpdate()
     {
         myRB.velocity = (transform.forward * moveSpeed);
@@ -31,6 +31,7 @@ public class FlyingEnemy : EnemyController
     {
         transform.LookAt(thePlayer.transform.position);
         Freeze();
+
 
         if (currentHealth <= 0)
         {

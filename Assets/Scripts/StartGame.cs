@@ -7,15 +7,11 @@ public class StartGame : MonoBehaviour
 {
     public string firstLevel;
    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   //Basic script for the title screen
 
-    // Update is called once per frame
     void Update()
     {
+        //loads Level1 one when you left click
         if (Input.GetMouseButtonDown(0))
             SceneManager.LoadScene (firstLevel);
     }

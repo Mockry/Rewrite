@@ -22,7 +22,8 @@ public class HealthDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+       //Checks how much health the player has and changes the font colour
+       //based on how high it is
         healthToDisplay = thePlayer.getHealth();
         if (healthToDisplay > 70)
             text.color = Color.green;
@@ -30,7 +31,7 @@ public class HealthDisplay : MonoBehaviour
             text.color = Color.yellow;
         if (healthToDisplay < 40)
             text.color = Color.red;
-
+        //puts the current health in the textbox which appears on screen
         text.text = "Health: " + healthToDisplay;
 
     }

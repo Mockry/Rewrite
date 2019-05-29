@@ -5,7 +5,6 @@ using UnityEngine;
 public class GunController : MonoBehaviour
 {
     public bool isFiring;
-
     public BulletController bullet;
     public float bulletSpeed;
 
@@ -23,10 +22,10 @@ public class GunController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // the shotCounter will decrease as long as the RMB is held down
         // when the shot counter is 0 it spawns a bullet at the gun's position and rotation and resets.
-        
+        //I could theoretically change what type of bullet is spawned
+        //but this version of the game only has one type of gun
         if(isFiring)
         {
             shotCounter -= Time.deltaTime;

@@ -29,7 +29,7 @@ public class BulletController : MonoBehaviour
         }
     }
 
-    // runs when the bullet collides with an other object's collision area
+    // runs when the bullet collides with another object's collision area
     private void OnCollisionEnter(Collision other)
     {
         //checks if the other object is an enemy and inflicts damage if it is. it also destroys the bullet
@@ -40,6 +40,7 @@ public class BulletController : MonoBehaviour
         }
 
         // checks if the other object is an obstacle and destroys the bullet
+        // if it is
         if (other.gameObject.tag == "Blocker")
         {
             Destroy(gameObject);

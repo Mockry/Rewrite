@@ -7,8 +7,8 @@ public class SpawnManager : MonoBehaviour
 
     //I want this to be public so I can assign different enemies to individual spawnpoints
     public EnemyController enemy;
-
-    private float spawnDelay = 20f;
+    //controls interval between waves of enemies
+    private float spawnDelay = 15f;
     private float spawnTimer;
 
     //Need this to tell the Enemies where to spawn
@@ -23,14 +23,14 @@ public class SpawnManager : MonoBehaviour
         //The initial spawn has a shorter Delay to start the action quickly
         spawnTimer = 5f;
         counter = FindObjectOfType<StatManager>();
-
-        //Makes the enemies spawn facing the centre of the level
+        //Makes the enemies spawn facing the center of the level
         transform.LookAt(Vector3.zero);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //WaveCount() is a getter that returns how many waves are still to spawn
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0 && counter.WaveCount() >= 1)
         {
