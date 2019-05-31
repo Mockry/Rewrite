@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     //I want this to be public so I can assign different enemies to individual spawnpoints
     public EnemyController enemy;
     //controls interval between waves of enemies
-    private float spawnDelay = 15f;
+    private float spawnDelay = 20f;
     private float spawnTimer;
 
     //Need this to tell the Enemies where to spawn

@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  health: 20
+  health: 10
   nmAgent: {fileID: 1737827013112429180}
   catHit: {fileID: 6170917443861385965}
   chargeSound: {fileID: 6125991200214171879}

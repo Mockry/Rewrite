@@ -1604,7 +1604,7 @@ PrefabInstance:
     - target: {fileID: 2789480340764673059, guid: 0a130b7bfd59a9f4daf29dc1786dbee5,
         type: 3}
       propertyPath: totalWaves
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a130b7bfd59a9f4daf29dc1786dbee5, type: 3}
